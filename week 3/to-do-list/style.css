@@ -1,0 +1,16 @@
+body
+{
+    background-color: aquamarine;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    
+}
+
+button
+{
+    background-color:lightblue;
+    padding:5px;
+    margin:5px;
+    box-shadow:2px 2px 5px;
+    border-radius:5px;
+    
+}

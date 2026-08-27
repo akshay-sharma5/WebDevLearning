@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake ladder </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <center><h3>Snake ladder</h3></center>
+<div style="display: flex;justify-content: space-around ;">
+    <div class="rules">
+<h3>Ladder rules</h3>
+
+If player lands on box 23 → climb ladder to box 39 
+<br><br>
+If player lands on box 50 → climb ladder to box 68
+<br><br>
+If player lands on box 61 → climb ladder to box 79
+<br><br>
+If player lands on box 65 → climb ladder to box 85
+<br><br>
+If player lands on box 75 → climb ladder to box 96
+
+    </div>
+    <div class="parent" style="display:grid;grid-template-columns:repeat(10,1fr);grid-template-rows:repeat(10,1fr)">
+
+    </div>
+
+    <div class="rules">
+        <h3>Snake rules</h3>
+        
+If player lands on box 99 → slide down to box 41
+<br><br>
+If player lands on box 71 → slide down to box 52
+<br><br>
+If player lands on box 74 → slide down to box 46
+<br><br>
+If player lands on box 57 → slide down to box 37
+<br><br>
+If player lands on box 34 → slide down to box 29
+<br><br>
+If player lands on box 27 → slide down to box 15
+<br><br>
+If player lands on box 21 → slide down to box 2
+<br><br>
+
+    </div>
+</div>
+    <div style="display: flex;justify-content: space-between;">
+    <div>
+    <h3>Player 1 Dice:</h3><p id="player0">1</p>
+    <button onclick="dice(0)">Roll dice</button>
+    </div>
+
+    <div>
+    <h3>Player 2 Dice:</h3><p id="player1">1</p>
+    <button onclick="dice(1)">Roll dice</button>
+    </div>
+
+    <div>
+    <h3>Player 3 Dice:</h3><p id="player2">1</p>
+    <button onclick="dice(2)">Roll dice</button>
+    </div>
+
+    <div>
+    <h3>Player 4 Dice:</h3><p id="player3">1</p>
+    <button onclick="dice(3)">Roll dice</button>
+    </div>
+
+
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

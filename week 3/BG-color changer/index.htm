@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .topbar
+        {
+            width: 1200px;box-shadow: 2px 2px 5px;display: flex;justify-content: center;
+        }
+        button
+        {
+            margin: 5px;
+            padding: 5px;
+            border-radius: 5px;
+        
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <button onclick="changeColor('red')">red</button>
+        <button onclick="changeColor('green')">green</button>
+        <button onclick="changeColor('blue')">blue</button>
+        <button onclick="changeColor('pink')">pink</button>
+        <button onclick="changeColor('grey')">grey</button>
+        <button onclick="changeColor('white')">default</button>
+
+        
+    </div>
+    <div><input type="text"></div>
+    <button onclick="addColor()">add color</button>
+</body>
+<script>
+    function changeColor(name)
+    {
+        let body=document.body
+        body.style.backgroundColor=name;
+    }
+    function addColor()
+    {
+        let color=document.querySelector("input").value
+        let btn=document.createElement("button")
+        btn.innerHTML=color
+        btn.onclick= ()=>{changeColor(color)}
+        let div=document.querySelector("div")
+        div.appendChild(btn)
+
+    }
+</script>
+</html>
