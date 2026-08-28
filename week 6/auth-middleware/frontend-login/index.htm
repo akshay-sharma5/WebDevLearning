@@ -10,9 +10,11 @@
     <div>Sign in: 
         <input type="text" placeholder="username" id="un2"><input type="password" placeholder="password" id="pw2"><button onclick="signin()">Submit</button> 
     </div>
-    <button onclick="logout()">logout</button>
+    
+    <p id="information"></p>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
     <script>
+        getUserInformation()
         async function signup(){
             let username=document.getElementById("un1").value
             let password=document.getElementById("pw1").value
@@ -26,11 +28,26 @@
             localStorage.setItem("token",response.data.token)
             alert("Signed up succesfully")
             console.log(response.token)
+            getUserInformation()
 
         }
 
-        async function logout() {
-        localStorage.removeItem("token");
+        
+
+async function getUserInformation(){
+    const token=localStorage.getItem("token")
+
+    if(token){
+        let response=await axios.get("http://localhost:3000/me",{
+            headers:{
+                "token":token
+            }
+        })
+        await axios.get("/loggedin.htm")
+        window.location.href="/loggedin.htm"
+
+
+    }
 }
     </script>
 </head>

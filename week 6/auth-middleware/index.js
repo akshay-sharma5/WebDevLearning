@@ -13,7 +13,8 @@ function auth(req,res,next){
                 res.status(401).send({"message":"Unauthorized"})
             }
             else{
-                req.user=decoded
+                req.username=decoded.username
+                console.log(decoded)
                 next()
             }
         
@@ -25,10 +26,15 @@ function auth(req,res,next){
 
 }
 
-app.use(express.json())
-app.use(auth)
+function logger(req,res,next){
+    console.log(req.method +"method")
+    next()
+}
 
-app.post('/signup',(req,res)=>{
+app.use(express.json())
+
+
+app.post('/signup',logger,(req,res)=>{
     let username=req.body.username
     let password=req.body.password
     users.push({
@@ -41,7 +47,7 @@ app.post('/signup',(req,res)=>{
     console.log(users)
 })
 
-app.post('/signin',(req,res)=>{
+app.post('/signin',logger,(req,res)=>{
     let username=req.body.username
     let password=req.body.password
 
@@ -52,20 +58,27 @@ app.post('/signin',(req,res)=>{
             "token":token
         })
         console.log({"token":token})
+        
     }
     else{
         res.send({"message":"Invalid username or password"})
     }
 })
 
-app.get('/me',auth,(req,res)=>{
-    const user=req.user
-    res.send({"username":user.username})
+app.get('/me',logger,auth,(req,res)=>{
+    const user=req.username
+    res.send({"username":user})
+    
 })
 
 app.get('/',(req,res)=>{
     res.sendFile(__dirname+"/frontend-login/index.htm")
 })
+
+app.get('/loggedin.htm',(req,res)=>{
+    res.sendFile(__dirname+"/frontend-login/loggedin.htm")
+})
+
 
 app.listen(3000,()=>{
     console.log("http://localhost:3000/")

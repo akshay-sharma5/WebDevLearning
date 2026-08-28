@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>logged in</title>
+</head>
+<body>
+    <div id ="information"></div>
+    <button onclick="logout()">Logout</button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+    <script>
+        async function logout() {
+        localStorage.removeItem("token");
+
+        await axios.get("/")
+        window.location.href = "/";
+        }
+    </script>
+</body>
+</html>
