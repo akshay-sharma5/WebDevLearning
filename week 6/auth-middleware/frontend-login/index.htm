@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login form</title>
+    <div>Sign up: 
+        <input type="text" placeholder="username" id="un1"><input type="password" placeholder="password" id="pw1"><button onclick="signup()">Submit</button> 
+    </div>
+    <div>Sign in: 
+        <input type="text" placeholder="username" id="un2"><input type="password" placeholder="password" id="pw2"><button onclick="signin()">Submit</button> 
+    </div>
+    <button onclick="logout()">logout</button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+    <script>
+        async function signup(){
+            let username=document.getElementById("un1").value
+            let password=document.getElementById("pw1").value
+            let response= await axios.post("http://localhost:3000/signup",{"username":username,"password":password})
+            alert("Sign up successfully")
+        }
+        async function signin(){
+            let username=document.getElementById("un1").value
+            let password=document.getElementById("pw1").value
+            let response= await axios.post("http://localhost:3000/signin",{"username":username,"password":password})
+            localStorage.setItem("token",response.data.token)
+            alert("Signed up succesfully")
+            console.log(response.token)
+
+        }
+
+        async function logout() {
+        localStorage.removeItem("token");
+}
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
