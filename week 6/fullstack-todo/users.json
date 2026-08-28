@@ -1,0 +1,11 @@
+[{
+    "username":"akshay",
+    "password":"1234",
+    "todolist":[
+        {
+            "task":"go to college",
+            "completed":true
+        }
+    ]
+}
+]
