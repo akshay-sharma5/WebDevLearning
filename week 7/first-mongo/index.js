@@ -6,42 +6,45 @@ const {UserModel,TodoModel,connectDb} =require('./db')
 
 const jwt=require('jsonwebtoken')
 
+const bcrypt=require('bcrypt')
+
 const app=new express()
 
 app.use(express.json())
 
 JWT_SECRET="JWT_SECRET"
 
-const emailSchema=zod.email()
-const passwordSchema=zod.string().min(6)
-
 
 app.post('/signup',logger,async (req,res)=>{
+const verifyFormat=zod.object({
+    "email":zod.string().email().min(3).max(30),
+    "password":zod.string().min(6).max(30),
+    "name":zod.string().min(3).max(30)
+})
+ 
 const email=req.body.email
 const password=req.body.password
 const name=req.body.name
 
-const formatEmail=emailSchema.safeParse(email)
-const formatPassword=passwordSchema.safeParse(password)
+const verifyFormatSuccess=verifyFormat.safeParse(req.body);
 
-if(!formatEmail.success){
-    return res.json({"message":"invalid email"})
-}
-
-if(!formatPassword.success){
-    return res.json({"message":"invalid password"})
+if(!verifyFormatSuccess.success){
+    console.log(verifyFormatSuccess.error)
+    return res.json({"message":verifyFormatSuccess.error.issues.map(issue=>issue.message)})
 }
 
 const response=await UserModel.findOne({
         email:email,
-        password:password
     })
     if(response){
         return res.json("user already exist")
     }
+
+    const hashedPassword=await bcrypt.hash(password,10)
+
 await UserModel.create({
     email:email,
-    password:password,
+    password:hashedPassword,
     name:name
 })
 
@@ -54,16 +57,24 @@ app.post('/signin',logger,async (req,res)=>{
     const password=req.body.password
 
     const response=await UserModel.findOne({
-        email:email,
-        password:password
+        email:email
     })
 
     if(response){
-        const token=jwt.sign({id:response._id.toString()},JWT_SECRET)
-        
-        res.json({"message":"You are succesfully signed in",
+        const verify=await bcrypt.compare(password,response.password)
+        console.log(verify)
+
+        if(verify){
+            const token=jwt.sign({id:response._id.toString()},JWT_SECRET)
+            res.json({"message":"You are succesfully signed in",
             "token":token
         })
+        }
+        else{
+            res.json({"message":"incorrect password"})
+        }
+
+        
     }else{
         res.json({"message":"User not found"})
     }
@@ -73,7 +84,12 @@ app.post('/signin',logger,async (req,res)=>{
 app.post('/todo',logger,auth,async(req,res)=>{
     const description=req.body.description
     const done=req.body.done
+    const response = await TodoModel.find({
+        userId:req.userId
+    })
+    const count=response.length
     await TodoModel.create({
+        todoId:count,
         description:description,
         done:done,
         userId:req.userId
@@ -93,10 +109,29 @@ app.get('/todos',logger,auth,async (req,res)=>{
     
 })
 
-app.post('/todo',logger,auth,async(req,res)=>{
-    const index=parseInt(req.index)
+app.put('/done',logger,auth,async(req,res)=>{
+    const index=req.body.todoId
+    const target = await TodoModel.updateOne({userId:req.userId,"todoId":index},{$set:{"done":true}})
+    
+    if(target){
+        res.send({"message":"marked task done! "})
+    }
+    else{
+        res.send({"message":"Invalid todoId"})
+    }
 
+})
 
+app.delete('/delete',logger,auth,async(req,res)=>{
+    const index=req.body.todoId
+    const target=await TodoModel.deleteOne({userId:req.userId,"todoId":index})
+    if(target.deletedCount>0){
+        console.log(target)
+        res.send({"message":"Todo deleted succesfully"})
+    }
+    else{
+     res.send({"message":"Invalid index"})
+    }
 })
 
 
