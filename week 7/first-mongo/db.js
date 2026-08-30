@@ -25,7 +25,7 @@ const Todo=new Schema({
     todoId:Number,
     description:String,
     done:Boolean,
-    userId:ObjectId
+    userId:{type:ObjectId,ref:'users'}
     
 })
 

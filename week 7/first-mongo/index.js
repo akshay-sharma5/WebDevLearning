@@ -101,8 +101,8 @@ app.post('/todo',logger,auth,async(req,res)=>{
 app.get('/todos',logger,auth,async (req,res)=>{
     const userId=req.userId
     const response = await TodoModel.find({
-        userId:userId
-    })
+        userId
+    }).populate('userId').exec()
     if(response){
         res.json(response)
     }
@@ -125,7 +125,7 @@ app.put('/done',logger,auth,async(req,res)=>{
 app.delete('/delete',logger,auth,async(req,res)=>{
     const index=req.body.todoId
     const target=await TodoModel.deleteOne({userId:req.userId,"todoId":index})
-    if(target.deletedCount>0){
+    if(target.deletedCount > 0 ){
         console.log(target)
         res.send({"message":"Todo deleted succesfully"})
     }
