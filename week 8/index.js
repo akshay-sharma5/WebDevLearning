@@ -36,6 +36,3 @@ try{
     console.log("Cant connect to db")
 }
 
-
-
-
