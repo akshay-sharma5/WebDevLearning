@@ -1,0 +1,9 @@
+#c{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 260px;
+  font-family:monospace;
+  background-color: black;
+  color: white;
+}
