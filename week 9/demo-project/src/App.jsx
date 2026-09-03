@@ -2,63 +2,50 @@ import { useState, useEffect } from 'react'
 
 import './App.css'
 
-//Conditional rendering
 
-function App() {
 
-  let [counterVisible,setCounterVisible]=useState(true)
-//mounting logic
+function App(){
+
+const [currentTab,setTab]=useState(1);
+
+const [todo,setTodo]=useState({})
+
+const [loading,setLoading]=useState(true)
+
+
   useEffect(()=>{
-    setInterval(()=>{
-      setCounterVisible(c=>!c)
-    },5000)
-
+    setLoading(true)
+    fetch("https://dummyjson.com/todos/"+currentTab).then(async(res)=>{
+      
+      const json=await res.json()
+      setTodo(json.todo)
+      setLoading(false)
+    })
     
-  },[])
-
-
-  return (  
-  <div>
-    hi
-    {counterVisible && <Counter/>}
-    hello
-  </div>
-
-  )
-}
-
-function Counter() {
-  const [count, setCount] = useState(0)
-
-  /*hooking into lifecycle of events of react
-
-  mounting,rendering ,unmounting
-
-  When we use useEffect the function inside useEffect only mount once
-  If we remove it our clock will go crazy
-  gaurds our setInterval from reRender
-  */ 
-
-  //mounting logic
-  useEffect(() => {
-    console.log("mounting")
-    let clock = setInterval(()=>{
-      console.log("from set interval")
-      setCount(count=>count+1)
-    }, 1000);
-
-    //unmounting logic
-    return ()=>{
-      console.log("unmounting")
-      clearInterval(clock)}
     
-  }, [])//dependency array ,cleanup,fetch inside userEffect
+  },[currentTab])
+
+
 
   return (
     <div>
-      <h1>{count}</h1>
+      <button onClick={()=>setTab(1)} style={{color:currentTab == 1 ? 'red':'black', margin:'10px'}}>ToDo # 1</button>
+      <button onClick={()=>setTab(2)} style={{color:currentTab == 2 ? 'red':'black' ,margin:'10px'}}>ToDo # 2</button>
+      <button onClick={()=>setTab(3)} style={{color:currentTab == 3 ? 'red':'black' ,margin:'10px'}}>ToDo # 3</button>
+      <button onClick={()=>setTab(4)} style={{color:currentTab == 4 ? 'red':'black' ,margin:'10px'}}>ToDo # 4</button>
+      <button onClick={()=>setTab(5)} style={{color:currentTab == 5 ? 'red':'black' ,margin:'10px'}}>ToDo # 5</button>
+      <button onClick={()=>setTab(6)} style={{color:currentTab == 6 ? 'red':'black' ,margin:'10px'}}>ToDo # 6</button>
+      <button onClick={()=>setTab(7)} style={{color:currentTab == 7 ? 'red':'black' ,margin:'10px'}}>ToDo # 7</button>
+      <button onClick={()=>setTab(8)} style={{color:currentTab == 8 ? 'red':'black' ,margin:'10px'}}>ToDo # 8</button>
+      <button onClick={()=>setTab(9)} style={{color:currentTab == 9 ? 'red':'black' ,margin:'10px'}}>ToDo # 9</button>
+      
+    
+      <br />
+      {loading?"Loading.....":todo}
     </div>
   )
 }
+
+
 
 export default App
