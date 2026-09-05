@@ -8,7 +8,7 @@ function App() {
 
   function startCounter(){
     let value =setInterval(()=>{
-      setCount(count=>count+1)
+      setCount(count=>count+1)  
     },100)
     timer.current=value
   }
